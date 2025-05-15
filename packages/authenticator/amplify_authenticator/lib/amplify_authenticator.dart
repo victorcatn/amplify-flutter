@@ -440,7 +440,7 @@ class Authenticator extends StatefulWidget {
   final StateMachineBloc? authBlocOverride;
 
   @override
-  State<Authenticator> createState() => _AuthenticatorState();
+  State<Authenticator> createState() => AuthenticatorState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -494,13 +494,13 @@ class Authenticator extends StatefulWidget {
   }
 }
 
-class _AuthenticatorState extends State<Authenticator> {
+class AuthenticatorState extends State<Authenticator> {
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   static final _logger = AmplifyLogger().createChild('Authenticator');
 
   final AuthService _authService = AmplifyAuthService();
   late final StateMachineBloc _stateMachineBloc;
-  late final AuthenticatorState _authenticatorState;
+  late final AuthenticatorState AuthenticatorState;
   late final StreamSubscription<AuthenticatorException> _exceptionSub;
   late final StreamSubscription<MessageResolverKey> _infoSub;
   late final StreamSubscription<AuthState> _successSub;
@@ -521,7 +521,7 @@ class _AuthenticatorState extends State<Authenticator> {
           initialStep: widget.initialStep,
           totpOptions: widget.totpOptions,
         )..add(const AuthLoad()));
-    _authenticatorState = AuthenticatorState(
+    AuthenticatorState = AuthenticatorState(
       _stateMachineBloc,
       defaultDialCode: widget.dialCodeOptions.defaultDialCode,
     );
@@ -687,7 +687,7 @@ class _AuthenticatorState extends State<Authenticator> {
         padding: widget.padding,
         child: InheritedAuthenticatorState(
           key: keyInheritedAuthenticatorState,
-          state: _authenticatorState,
+          state: AuthenticatorState,
           child: InheritedAuthenticatorBuilder(
             authenticatorBuilder: widget.authenticatorBuilder,
             child: InheritedStrings(
@@ -728,8 +728,8 @@ class _AuthenticatorState extends State<Authenticator> {
 // A widget that listens for changes in multiple inherited widgets
 // and rebuilds based on the provided builder, which accepts the current
 // AuthState.
-class _AuthStateBuilder extends StatelessWidget {
-  const _AuthStateBuilder({required this.child, required this.builder});
+class AuthStateBuilder extends StatelessWidget {
+  const AuthStateBuilder({required this.child, required this.builder});
 
   final Widget child;
   final Widget Function(AuthState, Widget) builder;
@@ -812,7 +812,7 @@ class _AuthenticatorBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _AuthStateBuilder(
+    return AuthStateBuilder(
       child: child,
       builder: (state, child) {
         if (state is AuthenticatedState) return child;
@@ -823,7 +823,7 @@ class _AuthenticatorBody extends StatelessWidget {
           pages: [
             MaterialPage<void>(
               child: ScaffoldMessenger(
-                key: _AuthenticatorState.scaffoldMessengerKey,
+                key: AuthenticatorState.scaffoldMessengerKey,
                 child: Scaffold(body: SizedBox.expand(child: child)),
               ),
             ),
@@ -848,14 +848,14 @@ class AuthenticatedView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FocusTraversalGroup(
-      child: _AuthStateBuilder(
+      child: AuthStateBuilder(
         child: child,
         builder: (state, child) {
           if (state is AuthenticatedState) {
             return child;
           }
           return ScaffoldMessenger(
-            key: _AuthenticatorState.scaffoldMessengerKey,
+            key: AuthenticatorState.scaffoldMessengerKey,
             child: Scaffold(
               body: SizedBox.expand(
                 child:
