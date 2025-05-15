@@ -440,7 +440,7 @@ class Authenticator extends StatefulWidget {
   final StateMachineBloc? authBlocOverride;
 
   @override
-  State<Authenticator> createState() => AuthenticatorState();
+  State<Authenticator> createState() => AuthenticatorState2();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -494,7 +494,7 @@ class Authenticator extends StatefulWidget {
   }
 }
 
-class AuthenticatorState extends State<Authenticator> {
+class AuthenticatorState2 extends State<Authenticator> {
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   static final _logger = AmplifyLogger().createChild('Authenticator');
 
@@ -823,7 +823,7 @@ class _AuthenticatorBody extends StatelessWidget {
           pages: [
             MaterialPage<void>(
               child: ScaffoldMessenger(
-                key: AuthenticatorState.scaffoldMessengerKey,
+                key: AuthenticatorState2.scaffoldMessengerKey,
                 child: Scaffold(body: SizedBox.expand(child: child)),
               ),
             ),
@@ -855,7 +855,7 @@ class AuthenticatedView extends StatelessWidget {
             return child;
           }
           return ScaffoldMessenger(
-            key: AuthenticatorState.scaffoldMessengerKey,
+            key: AuthenticatorState2.scaffoldMessengerKey,
             child: Scaffold(
               body: SizedBox.expand(
                 child:
