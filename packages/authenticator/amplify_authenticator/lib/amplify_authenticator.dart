@@ -500,7 +500,7 @@ class AuthenticatorState extends State<Authenticator> {
 
   final AuthService _authService = AmplifyAuthService();
   late final StateMachineBloc _stateMachineBloc;
-  late final AuthenticatorState AuthenticatorState;
+  late final AuthenticatorState _authenticatorState;
   late final StreamSubscription<AuthenticatorException> _exceptionSub;
   late final StreamSubscription<MessageResolverKey> _infoSub;
   late final StreamSubscription<AuthState> _successSub;
@@ -521,7 +521,7 @@ class AuthenticatorState extends State<Authenticator> {
           initialStep: widget.initialStep,
           totpOptions: widget.totpOptions,
         )..add(const AuthLoad()));
-    AuthenticatorState = AuthenticatorState(
+    _authenticatorState = AuthenticatorState(
       _stateMachineBloc,
       defaultDialCode: widget.dialCodeOptions.defaultDialCode,
     );
@@ -687,7 +687,7 @@ class AuthenticatorState extends State<Authenticator> {
         padding: widget.padding,
         child: InheritedAuthenticatorState(
           key: keyInheritedAuthenticatorState,
-          state: AuthenticatorState,
+          state: _authenticatorState,
           child: InheritedAuthenticatorBuilder(
             authenticatorBuilder: widget.authenticatorBuilder,
             child: InheritedStrings(
